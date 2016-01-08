@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,6 +20,8 @@ namespace SphanApp {
 
 		private void fmTray_Load(object sender, EventArgs e) {
 			this.Hide();
+
+			// 
 			this.applySettings();
 		}
 
@@ -39,18 +42,46 @@ namespace SphanApp {
 		#endregion
 		#region App Methods
 
+		/// <summary>
+		/// 
+		/// </summary>
 		private void applySettings() {
 			// Load all settings.
 			var settings = SphanSettings.Load();
 			settings.Save();
 
 			// General
+			if (settings.PauseSpotifyOnWindowsLock ||
+				settings.ResumtPlayOnWindowsUnlock)
+				SystemEvents.SessionSwitch += sessionSwitch;
 
 			// Hotkeys
 
 			// Toast
 
 			// Webhooks
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		private void sessionSwitch(object sender, SessionSwitchEventArgs e) {
+			// Load all settings.
+			var settings = SphanSettings.Load();
+
+			switch (e.Reason) {
+				case SessionSwitchReason.SessionLock:
+					if (settings.PauseSpotifyOnWindowsLock) {
+					}
+
+					break;
+
+				case SessionSwitchReason.SessionUnlock:
+					if (settings.ResumtPlayOnWindowsUnlock) {
+					}
+
+					break;
+			}
 		}
 
 		#endregion
