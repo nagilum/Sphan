@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace SphanApp {
+	/// <summary>
+	/// 
+	/// </summary>
 	public class Cacher {
+		/// <summary>
+		/// 
+		/// </summary>
 		private static readonly Dictionary<string, object> items = new Dictionary<string, object>();
 
 		/// <summary>
@@ -25,7 +27,7 @@ namespace SphanApp {
 		/// <param name="key"></param>
 		/// <returns></returns>
 		public static object Get(string key) {
-			return items[key];
+			return items.ContainsKey(key) ? items[key] : null;
 		}
 
 		/// <summary>
@@ -35,8 +37,11 @@ namespace SphanApp {
 		/// <param name="key"></param>
 		/// <returns></returns>
 		public static T Get<T>(string key) where T : class {
+			if (!items.ContainsKey(key))
+				return default(T);
+
 			try {
-				return (T) Get(key);
+				return (T) items[key];
 			}
 			catch {
 				return default(T);
@@ -49,7 +54,7 @@ namespace SphanApp {
 		/// <param name="key"></param>
 		/// <param name="data"></param>
 		public static void Set(string key, object data) {
-			if (items[key] != null)
+			if (items.ContainsKey(key))
 				items[key] = data;
 			else
 				items.Add(
