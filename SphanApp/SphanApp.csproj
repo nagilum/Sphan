@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cacher.cs" />
     <Compile Include="fmAbout.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +73,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SphanSettings.cs" />
+    <Compile Include="SpotifyControl.cs" />
     <EmbeddedResource Include="fmAbout.resx">
       <DependentUpon>fmAbout.cs</DependentUpon>
     </EmbeddedResource>

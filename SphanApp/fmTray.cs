@@ -71,14 +71,14 @@ namespace SphanApp {
 
 			switch (e.Reason) {
 				case SessionSwitchReason.SessionLock:
-					if (settings.PauseSpotifyOnWindowsLock) {
-					}
+					if (settings.PauseSpotifyOnWindowsLock)
+						SpotifyControl.PlayPause();
 
 					break;
 
 				case SessionSwitchReason.SessionUnlock:
-					if (settings.ResumtPlayOnWindowsUnlock) {
-					}
+					if (settings.ResumtPlayOnWindowsUnlock)
+						SpotifyControl.PlayPause();
 
 					break;
 			}

@@ -67,7 +67,10 @@ namespace SphanApp {
 		#region Methods
 
 		public static SphanSettings Load() {
-			SphanSettings settings = null;
+			var settings = Cacher.Get<SphanSettings>("Settings");
+
+			if (settings != null)
+				return settings;
 
 			var filename =
 				Application.ExecutablePath.Substring(0, Application.ExecutablePath.LastIndexOf('.')) +
@@ -143,6 +146,8 @@ namespace SphanApp {
 			File.WriteAllText(
 				filename,
 				new JavaScriptSerializer().Serialize(this));
+
+			Cacher.Set("Settings", this);
 		}
 
 		#endregion
@@ -157,7 +162,7 @@ namespace SphanApp {
 		VolumeDown,
 		VolumeUp,
 		ShowToast,
-		MinimizeRestoreSpotify,
+		ToggleWindowState,
 		CopyTrackInfoToClipboard,
 		CopySpotifyUriToClipboard,
 		FastForward,
