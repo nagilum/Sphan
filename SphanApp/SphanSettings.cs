@@ -131,7 +131,6 @@ namespace SphanApp {
 				ToastFadeOutLength = 250,
 
 				// Webhooks
-
 				WebserverPort = 18709
 			};
 
