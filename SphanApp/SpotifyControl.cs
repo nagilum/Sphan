@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SphanApp {
 	public class SpotifyControl {
@@ -21,6 +22,9 @@ namespace SphanApp {
 		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
 		internal static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
+		[DllImport("User32.dll")]
+		internal static extern IntPtr SendMessage(IntPtr hWnd, int uMsg, int wParam, string lParam);
+
 		[DllImport("user32.dll")]
 		internal static extern IntPtr SetFocus(IntPtr hWnd);
 
@@ -28,6 +32,7 @@ namespace SphanApp {
 		internal static extern bool SetForegroundWindow(IntPtr hWnd);
 
 		internal const uint WM_APPCOMMAND = 0x0319;
+		internal const int WM_SETTEXT = 0x000C;
 
 		internal const int SW_SHOWMINIMIZED = 2;
 		internal const int SW_SHOWNOACTIVATE = 4;
@@ -158,18 +163,6 @@ namespace SphanApp {
 		/// 
 		/// </summary>
 		public static void GetSpotifyUri() {
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		public static void FastForward() {
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
-		public static void Rewind() {
 		}
 
 		#endregion
