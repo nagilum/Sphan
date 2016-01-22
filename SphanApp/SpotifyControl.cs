@@ -12,10 +12,39 @@ namespace SphanApp {
 		[DllImport("user32.dll", SetLastError = true)]
 		internal static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
+		[DllImport("user32.dll")]
+		internal static extern bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
+
+		[DllImport("user32.dll")]
+		internal static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
 		[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
 		internal static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
+		[DllImport("user32.dll")]
+		internal static extern IntPtr SetFocus(IntPtr hWnd);
+
+		[DllImport("user32.dll")]
+		internal static extern bool SetForegroundWindow(IntPtr hWnd);
+
 		internal const uint WM_APPCOMMAND = 0x0319;
+
+		internal const int SW_SHOWMINIMIZED = 2;
+		internal const int SW_SHOWNOACTIVATE = 4;
+		internal const int SW_SHOW = 5;
+		internal const int SW_RESTORE = 9;
+
+		internal const int WM_CLOSE = 0x10;
+		internal const int WM_QUIT = 0x12;
+
+		internal struct WINDOWPLACEMENT {
+			public int length;
+			public int flags;
+			public int showCmd;
+			public System.Drawing.Point ptMinPosition;
+			public System.Drawing.Point ptMaxPosition;
+			public System.Drawing.Rectangle rcNormalPosition;
+		}
 
 		#endregion
 		#region Public Commands
@@ -68,6 +97,11 @@ namespace SphanApp {
 		/// 
 		/// </summary>
 		public static void ToggleMute() {
+			SendMessage(
+				getSpotifyHandle(),
+				WM_APPCOMMAND,
+				IntPtr.Zero,
+				new IntPtr(524288));
 		}
 
 		/// <summary>
@@ -95,18 +129,23 @@ namespace SphanApp {
 		/// <summary>
 		/// 
 		/// </summary>
-		public static void Mute() {
-			SendMessage(
-				getSpotifyHandle(),
-				WM_APPCOMMAND,
-				IntPtr.Zero,
-				new IntPtr(524288));
-		}
-
-		/// <summary>
-		/// 
-		/// </summary>
 		public static void ToggleWindowState() {
+			var hwnd = getSpotifyHandle();
+
+			if (hwnd == IntPtr.Zero)
+				return;
+
+			var placement = new WINDOWPLACEMENT();
+			GetWindowPlacement(hwnd, ref placement);
+
+			if (placement.showCmd == SW_SHOWMINIMIZED) {
+				ShowWindow(hwnd, SW_RESTORE);
+				SetForegroundWindow(hwnd);
+				SetFocus(hwnd);
+			}
+			else {
+				ShowWindow(hwnd, SW_SHOWMINIMIZED);
+			}
 		}
 
 		/// <summary>
