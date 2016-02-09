@@ -53,57 +53,57 @@
             this.toolStripMenuItem3,
             this.miExit});
 			this.cmTray.Name = "cmTray";
-			this.cmTray.Size = new System.Drawing.Size(132, 88);
+			this.cmTray.Size = new System.Drawing.Size(117, 82);
 			// 
 			// miSettings
 			// 
 			this.miSettings.Name = "miSettings";
-			this.miSettings.Size = new System.Drawing.Size(131, 24);
+			this.miSettings.Size = new System.Drawing.Size(116, 22);
 			this.miSettings.Text = "&Settings";
 			this.miSettings.Click += new System.EventHandler(this.miSettings_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(128, 6);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(113, 6);
 			// 
 			// miAbout
 			// 
 			this.miAbout.Name = "miAbout";
-			this.miAbout.Size = new System.Drawing.Size(131, 24);
+			this.miAbout.Size = new System.Drawing.Size(116, 22);
 			this.miAbout.Text = "&About";
 			this.miAbout.Click += new System.EventHandler(this.miAbout_Click);
 			// 
 			// toolStripMenuItem3
 			// 
 			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(128, 6);
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(113, 6);
 			// 
 			// miExit
 			// 
 			this.miExit.Name = "miExit";
-			this.miExit.Size = new System.Drawing.Size(131, 24);
+			this.miExit.Size = new System.Drawing.Size(116, 22);
 			this.miExit.Text = "E&xit";
 			this.miExit.Click += new System.EventHandler(this.miExit_Click);
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(12, 9);
+			this.label1.Location = new System.Drawing.Point(9, 7);
+			this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(129, 17);
+			this.label1.Size = new System.Drawing.Size(98, 13);
 			this.label1.TabIndex = 1;
 			this.label1.Text = "Should not see me!";
 			// 
 			// fmTray
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(304, 34);
+			this.ClientSize = new System.Drawing.Size(228, 28);
 			this.ControlBox = false;
 			this.Controls.Add(this.label1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "fmTray";
