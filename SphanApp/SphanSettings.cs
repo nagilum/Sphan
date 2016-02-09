@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows.Forms;
 
@@ -66,6 +62,9 @@ namespace SphanApp {
 		#endregion
 		#region Methods
 
+		/// <summary>
+		/// 
+		/// </summary>
 		public static SphanSettings Load() {
 			var settings = Cacher.Get<SphanSettings>("Settings");
 
@@ -137,6 +136,25 @@ namespace SphanApp {
 			return settings;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		public static HotkeyEntry MatchHotkeyEntry(bool alt, bool ctrl, bool shift, bool win, Keys key) {
+			var settings = Load();
+
+			return
+				settings.HotkeyEntries.FirstOrDefault(
+					entry =>
+						entry.KeyAlt == alt &&
+						entry.KeyCtrl == ctrl &&
+						entry.KeyShift == shift &&
+						entry.KeyWin == win &&
+						entry.Key == key);
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
 		public void Save() {
 			var filename =
 				Application.ExecutablePath.Substring(0, Application.ExecutablePath.LastIndexOf('.')) +
