@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace SphanApp {
 	public class SpotifyControl {
@@ -55,7 +52,7 @@ namespace SphanApp {
 		#region Public Commands
 
 		/// <summary>
-		/// 
+		/// Toggle play/pause.
 		/// </summary>
 		public static void PlayPause() {
 			SendMessage(
@@ -66,7 +63,7 @@ namespace SphanApp {
 		}
 
 		/// <summary>
-		/// 
+		/// Stop playing.
 		/// </summary>
 		public static void Stop() {
 			SendMessage(
@@ -77,7 +74,7 @@ namespace SphanApp {
 		}
 
 		/// <summary>
-		/// 
+		/// Trigger previous track.
 		/// </summary>
 		public static void PreviousTrack() {
 			SendMessage(
@@ -88,7 +85,7 @@ namespace SphanApp {
 		}
 
 		/// <summary>
-		/// 
+		/// Trigger next track.
 		/// </summary>
 		public static void NextTrack() {
 			SendMessage(
@@ -99,7 +96,7 @@ namespace SphanApp {
 		}
 
 		/// <summary>
-		/// 
+		/// Toggle mute.
 		/// </summary>
 		public static void ToggleMute() {
 			SendMessage(
@@ -110,7 +107,7 @@ namespace SphanApp {
 		}
 
 		/// <summary>
-		/// 
+		/// Turn volume down, slightly.
 		/// </summary>
 		public static void VolumeDown() {
 			SendMessage(
@@ -121,7 +118,7 @@ namespace SphanApp {
 		}
 
 		/// <summary>
-		/// 
+		/// Turn volume up, slightly.
 		/// </summary>
 		public static void VolumeUp() {
 			SendMessage(
@@ -132,7 +129,7 @@ namespace SphanApp {
 		}
 
 		/// <summary>
-		/// 
+		/// Minimize/restore the main window.
 		/// </summary>
 		public static void ToggleWindowState() {
 			var hwnd = getSpotifyHandle();
@@ -153,26 +150,68 @@ namespace SphanApp {
 			}
 		}
 
+		#endregion
+		#region Public Info
+
 		/// <summary>
-		/// 
+		/// Get the current track playing in Spotify.
 		/// </summary>
-		public static void GetTrackInfo() {
+		public static string GetTrackInfo() {
+			var proc = getSpotifyProcess();
+
+			if (proc == null)
+				return null;
+
+			return proc.MainWindowTitle == "Spotify"
+				? null
+				: proc.MainWindowTitle;
 		}
 
 		/// <summary>
 		/// 
 		/// </summary>
-		public static void GetSpotifyUri() {
+		public static string GetSpotifyUri() {
+			return null;
+		}
+
+		/// <summary>
+		/// Determines whether or not Spotify is currently playing a track.
+		/// </summary>
+		public static bool IsPlaying {
+			get {
+				var proc = getSpotifyProcess();
+				return proc != null &&
+				       proc.MainWindowTitle != "Spotify";
+			}
+		}
+
+		/// <summary>
+		/// Determines whether or not Spotify is running.
+		/// </summary>
+		public static bool IsRunning {
+			get {
+				return getSpotifyProcess() != null;
+			}
 		}
 
 		#endregion
 		#region Helper Functions/Properties
 
 		/// <summary>
-		/// 
+		/// Get the Spotify main window handle.
 		/// </summary>
 		private static IntPtr getSpotifyHandle() {
 			return FindWindow("SpotifyMainWindow", null);
+		}
+
+		/// <summary>
+		/// Get the Spotify main window process.
+		/// </summary>
+		private static Process getSpotifyProcess() {
+			return Process
+				.GetProcesses()
+				.FirstOrDefault(p => p.ProcessName.Contains("Spotify") &&
+				                     !string.IsNullOrWhiteSpace(p.MainWindowTitle));
 		}
 
 		#endregion

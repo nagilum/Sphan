@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -105,11 +106,11 @@ namespace SphanApp {
 
 			switch (entry.Command) {
 				case SpotifyCommand.CopySpotifyUriToClipboard:
-					// TODO: SpotifyCommand.CopySpotifyUriToClipboard
+					Clipboard.SetText(SpotifyControl.GetSpotifyUri());
 					break;
 
 				case SpotifyCommand.CopyTrackInfoToClipboard:
-					// TODO: SpotifyCommand.CopyTrackInfoToClipboard
+					Clipboard.SetText(SpotifyControl.GetTrackInfo());
 					break;
 
 				case SpotifyCommand.FastForward:
@@ -159,7 +160,7 @@ namespace SphanApp {
 		}
 
 		/// <summary>
-		/// 
+		/// Toggle play/pause when moving in/out of Windows lock.
 		/// </summary>
 		private void sessionSwitch(object sender, SessionSwitchEventArgs e) {
 			// Load all settings.
@@ -167,13 +168,15 @@ namespace SphanApp {
 
 			switch (e.Reason) {
 				case SessionSwitchReason.SessionLock:
-					if (settings.PauseSpotifyOnWindowsLock)
+					if (settings.PauseSpotifyOnWindowsLock &&
+						SpotifyControl.IsPlaying)
 						SpotifyControl.PlayPause();
 
 					break;
 
 				case SessionSwitchReason.SessionUnlock:
-					if (settings.ResumtPlayOnWindowsUnlock)
+					if (settings.ResumtPlayOnWindowsUnlock &&
+						!SpotifyControl.IsPlaying)
 						SpotifyControl.PlayPause();
 
 					break;
