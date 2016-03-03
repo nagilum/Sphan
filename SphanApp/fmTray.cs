@@ -1,14 +1,5 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 using System.Windows.Forms;
 
 namespace SphanApp {
@@ -33,6 +24,17 @@ namespace SphanApp {
 			fmSettings.Show(this);
 		}
 
+		private void miStartOnWindowsStartup_Click(object sender, EventArgs e) {
+			this.miStartOnWindowsStartup.Checked = !this.miStartOnWindowsStartup.Checked;
+
+			toggleWindowsStartup(this.miStartOnWindowsStartup.Checked);
+
+			var settings = SphanSettings.Load();
+
+			settings.LaunchAtWindowsStartup = this.miStartOnWindowsStartup.Checked;
+			settings.Save();
+		}
+
 		private void miAbout_Click(object sender, EventArgs e) {
 			var fmAbout = new fmAbout();
 			fmAbout.Show(this);
@@ -46,21 +48,43 @@ namespace SphanApp {
 		#region App Methods
 
 		/// <summary>
-		/// 
+		/// Load and apply settings.
 		/// </summary>
 		private void applySettings() {
 			// Load all settings.
 			var settings = SphanSettings.Load();
 			settings.Save();
 
-			// General
+			/**
+			 * GENERAL
+			 */
+
+			// Session switch
 			if (settings.PauseSpotifyOnWindowsLock ||
 				settings.ResumtPlayOnWindowsUnlock)
 				SystemEvents.SessionSwitch += sessionSwitch;
 
-			// Hotkeys
-			this.keyboardHook.KeyPressed += KeyboardHookOnKeyPressed;
+			// Windows startup
+			if (settings.LaunchAtWindowsStartup &&
+			    !isProgramInWindowsStartup())
+				toggleWindowsStartup(true);
 
+			if (!settings.LaunchAtWindowsStartup &&
+			    isProgramInWindowsStartup())
+				toggleWindowsStartup(false);
+
+			this.miStartOnWindowsStartup.Checked = settings.LaunchAtWindowsStartup;
+
+			// App startup and minimize
+
+			/**
+			 * HOTKEYS
+			 */
+
+			// Set interpreter.
+			this.keyboardHook.KeyPressed += keyboardHookOnKeyPressed;
+
+			// Cycle and add all hotkeys.
 			foreach (var entry in settings.HotkeyEntries) {
 				var modifier = KeyboardHookHelper.CompileModifierKeys(
 					entry.KeyAlt,
@@ -73,15 +97,38 @@ namespace SphanApp {
 					entry.Key);
 			}
 
-			// Toast
+			/**
+			 * TOAST
+			 */
 
-			// Webhooks
+			/**
+			 * WEBHOOKS
+			 */
 		}
 
 		/// <summary>
-		/// 
+		/// Checks in the Windows registry whether the app is setup for startup.
 		/// </summary>
-		private void KeyboardHookOnKeyPressed(object sender, KeyPressedEventArgs e) {
+		private bool isProgramInWindowsStartup() {
+			var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+
+			if (key == null)
+				return false;
+
+			var value = key.GetValue(Application.ProductName);
+
+			if (value == null)
+				return false;
+
+			var value_ins = value.ToString();
+
+			return value_ins != "0";
+		}
+
+		/// <summary>
+		/// Translate global hotkeys and perform acordingly.
+		/// </summary>
+		private void keyboardHookOnKeyPressed(object sender, KeyPressedEventArgs e) {
 			bool alt;
 			bool ctrl;
 			bool shift;
@@ -181,6 +228,21 @@ namespace SphanApp {
 
 					break;
 			}
+		}
+
+		/// <summary>
+		/// Toggles the startup state of the app.
+		/// </summary>
+		private void toggleWindowsStartup(bool mode) {
+			var key = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", true);
+
+			if (key == null)
+				return;
+
+			if (mode)
+				key.SetValue(Application.ProductName, Application.ExecutablePath);
+			else
+				key.DeleteValue(Application.ProductName);
 		}
 
 		#endregion

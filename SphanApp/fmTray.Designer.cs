@@ -33,6 +33,7 @@
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.miExit = new System.Windows.Forms.ToolStripMenuItem();
 			this.label1 = new System.Windows.Forms.Label();
+			this.miStartOnWindowsStartup = new System.Windows.Forms.ToolStripMenuItem();
 			this.cmTray.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -48,41 +49,42 @@
 			this.cmTray.ImageScalingSize = new System.Drawing.Size(20, 20);
 			this.cmTray.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miSettings,
+            this.miStartOnWindowsStartup,
             this.toolStripMenuItem1,
             this.miAbout,
             this.toolStripMenuItem3,
             this.miExit});
 			this.cmTray.Name = "cmTray";
-			this.cmTray.Size = new System.Drawing.Size(117, 82);
+			this.cmTray.Size = new System.Drawing.Size(209, 126);
 			// 
 			// miSettings
 			// 
 			this.miSettings.Name = "miSettings";
-			this.miSettings.Size = new System.Drawing.Size(116, 22);
+			this.miSettings.Size = new System.Drawing.Size(208, 22);
 			this.miSettings.Text = "&Settings";
 			this.miSettings.Click += new System.EventHandler(this.miSettings_Click);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(113, 6);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(205, 6);
 			// 
 			// miAbout
 			// 
 			this.miAbout.Name = "miAbout";
-			this.miAbout.Size = new System.Drawing.Size(116, 22);
+			this.miAbout.Size = new System.Drawing.Size(208, 22);
 			this.miAbout.Text = "&About";
 			this.miAbout.Click += new System.EventHandler(this.miAbout_Click);
 			// 
 			// toolStripMenuItem3
 			// 
 			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(113, 6);
+			this.toolStripMenuItem3.Size = new System.Drawing.Size(205, 6);
 			// 
 			// miExit
 			// 
 			this.miExit.Name = "miExit";
-			this.miExit.Size = new System.Drawing.Size(116, 22);
+			this.miExit.Size = new System.Drawing.Size(208, 22);
 			this.miExit.Text = "E&xit";
 			this.miExit.Click += new System.EventHandler(this.miExit_Click);
 			// 
@@ -95,6 +97,13 @@
 			this.label1.Size = new System.Drawing.Size(98, 13);
 			this.label1.TabIndex = 1;
 			this.label1.Text = "Should not see me!";
+			// 
+			// miStartOnWindowsStartup
+			// 
+			this.miStartOnWindowsStartup.Name = "miStartOnWindowsStartup";
+			this.miStartOnWindowsStartup.Size = new System.Drawing.Size(208, 22);
+			this.miStartOnWindowsStartup.Text = "Start on &Windows Startup";
+			this.miStartOnWindowsStartup.Click += new System.EventHandler(this.miStartOnWindowsStartup_Click);
 			// 
 			// fmTray
 			// 
@@ -127,5 +136,6 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
 		private System.Windows.Forms.ToolStripMenuItem miExit;
 		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.ToolStripMenuItem miStartOnWindowsStartup;
 	}
 }
