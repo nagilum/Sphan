@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace SphanApp {
 	public class SpotifyControl {
@@ -28,7 +29,10 @@ namespace SphanApp {
 		[DllImport("user32.dll")]
 		internal static extern bool SetForegroundWindow(IntPtr hWnd);
 
-		internal const uint WM_APPCOMMAND = 0x0319;
+	    [DllImport("user32.dll", SetLastError = true)]
+	    static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
+
+        internal const uint WM_APPCOMMAND = 0x0319;
 		internal const int WM_SETTEXT = 0x000C;
 
 		internal const int SW_SHOWMINIMIZED = 2;
@@ -48,52 +52,76 @@ namespace SphanApp {
 			public System.Drawing.Rectangle rcNormalPosition;
 		}
 
-		#endregion
-		#region Public Commands
+	    public static void PressKey(Keys key, bool up) {
+	        const int KEYEVENTF_EXTENDEDKEY = 0x1;
+	        const int KEYEVENTF_KEYUP = 0x2;
 
-		/// <summary>
-		/// Toggle play/pause.
-		/// </summary>
-		public static void PlayPause() {
-			SendMessage(
-				getSpotifyHandle(),
-				WM_APPCOMMAND,
-				IntPtr.Zero,
-				new IntPtr(917504));
-		}
+	        if (up) {
+	            keybd_event((byte) key, 0x45, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, (UIntPtr) 0);
+	        }
+	        else {
+	            keybd_event((byte) key, 0x45, KEYEVENTF_EXTENDEDKEY, (UIntPtr) 0);
+	        }
+	    }
+
+	    #endregion
+        #region Public Commands
+
+        /// <summary>
+        /// Toggle play/pause.
+        /// </summary>
+        public static void PlayPause() {
+            //SendMessage(
+            //	getSpotifyHandle(),
+            //	WM_APPCOMMAND,
+            //	IntPtr.Zero,
+            //	new IntPtr(917504));
+
+            PressKey(Keys.MediaPlayPause, false);
+            PressKey(Keys.MediaPlayPause, true);
+        }
 
 		/// <summary>
 		/// Stop playing.
 		/// </summary>
 		public static void Stop() {
-			SendMessage(
-				getSpotifyHandle(),
-				WM_APPCOMMAND,
-				IntPtr.Zero,
-				new IntPtr(851968));
-		}
+            //SendMessage(
+            //	getSpotifyHandle(),
+            //	WM_APPCOMMAND,
+            //	IntPtr.Zero,
+		    //	new IntPtr(851968));
+
+		    PressKey(Keys.MediaStop, false);
+		    PressKey(Keys.MediaStop, true);
+        }
 
 		/// <summary>
 		/// Trigger previous track.
 		/// </summary>
 		public static void PreviousTrack() {
-			SendMessage(
-				getSpotifyHandle(),
-				WM_APPCOMMAND,
-				IntPtr.Zero,
-				new IntPtr(786432));
-		}
+            //SendMessage(
+            //	getSpotifyHandle(),
+            //	WM_APPCOMMAND,
+            //	IntPtr.Zero,
+		    //	new IntPtr(786432));
+
+		    PressKey(Keys.MediaPreviousTrack, false);
+		    PressKey(Keys.MediaPreviousTrack, true);
+        }
 
 		/// <summary>
 		/// Trigger next track.
 		/// </summary>
 		public static void NextTrack() {
-			SendMessage(
-				getSpotifyHandle(),
-				WM_APPCOMMAND,
-				IntPtr.Zero,
-				new IntPtr(720896));
-		}
+			//SendMessage(
+			//	getSpotifyHandle(),
+			//	WM_APPCOMMAND,
+			//	IntPtr.Zero,
+			//	new IntPtr(720896));
+
+            PressKey(Keys.MediaNextTrack, false);
+		    PressKey(Keys.MediaNextTrack, true);
+        }
 
 		/// <summary>
 		/// Toggle mute.
